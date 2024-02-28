@@ -1,15 +1,31 @@
 import express from "express";
-import cors from "cors";
+import http from "http";
 import Router from "./routes/routes";
-import https from "https";
 
 const app = express();
-const server = https.createServer(app);
+const server = http.createServer(app);
 
-app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/", Router);
 
-server.listen(3000, () => {
-  console.log("listening on port 3000");
+app.use(
+  (
+    err: any,
+    req: express.Request,
+    res: express.Response,
+    next: (err?: any) => void
+  ) => {
+    console.error(err.stack);
+    res.status(500).send("Something went wrong!");
+  }
+);
+
+app.use(express.static("public"));
+
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log("listening on port " + PORT);
 });
