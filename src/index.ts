@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import http from "http";
 import Router from "./routes/routes";
 
@@ -11,12 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", Router);
 
 app.use(
-  (
-    err: any,
-    req: express.Request,
-    res: express.Response,
-    next: (err?: any) => void
-  ) => {
+  (err: Error, req: Request, res: Response, next: (err?: Error) => void) => {
     console.error(err.stack);
     res.status(500).send("Something went wrong!");
   }
