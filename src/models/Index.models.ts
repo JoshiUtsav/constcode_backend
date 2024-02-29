@@ -1,1 +1,1 @@
-export { default as User } from "./user.ts"
+export { default as User } from "./User.models.ts"

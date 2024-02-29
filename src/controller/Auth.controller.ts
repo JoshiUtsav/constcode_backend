@@ -1,4 +1,4 @@
-import { User } from "../models/Index";
+import { User } from "../models/Index.models";
 import { Request, Response } from "express";
 
 async function handleUserAuth(req: Request, res: Response) {
