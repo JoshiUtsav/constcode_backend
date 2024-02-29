@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 
 const Router = express.Router();
 
-Router.get("/", (req: Response, res: Request) => {
+Router.get("/", (req: Request, res: Response) => {
   res.send("Home page");
 });
 
