@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
-import { Home_Page } from "../controller/Index";
+import { handleUserAuth } from "../controller/Index";
 
 const Router = express.Router();
 
-Router.get("/", Home_Page);
+Router.post("/signup", handleUserAuth);
 
 export default Router;
