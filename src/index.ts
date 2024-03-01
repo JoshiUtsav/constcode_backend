@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", Router);
 app.use("/auth", Auth);
 
-app.use((err: Error, req: Request, res: Response) => {
+app.use((err: Error, req: Request, res: Response, next: express.NextFunction) => {
   res.status(500).send("Something went wrong!");
 });
 
