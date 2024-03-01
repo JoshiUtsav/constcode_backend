@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "types": ["node", "express"],
     "target": "ES6",
     "module": "commonjs",
     "rootDir": "./src",
