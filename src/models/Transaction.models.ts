@@ -33,7 +33,7 @@ const transaction_schema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Transaction = mongoose.model("Transaction", transaction_schema);

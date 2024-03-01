@@ -40,7 +40,7 @@ const Course_Schema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Course = mongoose.model("Course", Course_Schema);
