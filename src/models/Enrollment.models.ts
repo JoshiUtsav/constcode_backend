@@ -22,7 +22,7 @@ const enrollment_schema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Enrollment = mongoose.model("Enrollment", enrollment_schema);
