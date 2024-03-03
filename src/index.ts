@@ -1,29 +1,41 @@
 import express, { Request, Response } from "express";
 import http from "http";
+import cors from "cors";
 import Router from "./routes/routes";
 import Auth from "./routes/auth";
-import { PORT } from "./config/Index";
+import { PORT, CORS_ORIGIN } from "./config/Index";
 import Database from "./database/index";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const server = http.createServer(app);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(
+  cors({
+    origin: CORS_ORIGIN,
+    credentials: true,
+  })
+);
+app.use(express.static("public"));
+app.use(cookieParser());
 
 app.use("/", Router);
 app.use("/auth", Auth);
 
 app.use(
   (err: Error, req: Request, res: Response, next: express.NextFunction) => {
-    res.status(500).send("Something went wrong!");
+    res.status(500).send(`Internal Server Error: ${err.message}`);
   }
 );
 
-app.use(express.static("public"));
-
-server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
-
-Database();
+Database()
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("MongoDB Connection failed: " + err);
+  });
