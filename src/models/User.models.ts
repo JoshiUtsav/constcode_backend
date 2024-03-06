@@ -1,34 +1,52 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const user_Schema = new mongoose.Schema(
+const userSchema = new Schema(
   {
-    user_Id: {
+    userId: {
       type: String,
       required: true,
       unique: true,
     },
-    name: {
+    username: {
       type: String,
       required: true,
+      lowercase: true,
+      trim: true,
+      index: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
     },
-    password: {
+    avatar: {
       type: String,
       required: true,
     },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+    },
     number: {
       type: Number,
-      required: true,
+      required: [true, "Number is required"],
+    },
+    watchHistory: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
+    refreshToken: {
+      type: String,
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-const User = mongoose.model("User", user_Schema);
+const User = mongoose.model("User", userSchema);
 export default User;

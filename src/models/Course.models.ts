@@ -1,11 +1,18 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const Course_Schema = new mongoose.Schema(
+const Course_Schema = new Schema(
   {
-    user_Id: {
+    course_Id: {
       type: String,
       required: true,
       unique: true,
+    },
+    video_file: {
+      type: String,
+      required: true,
+    },
+    thumbnail: {
+      type: String,
     },
     Title: {
       type: String,
@@ -15,32 +22,14 @@ const Course_Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    instructor: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
     duration: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
-    },
-    level: {
       type: String,
       required: true,
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const Course = mongoose.model("Course", Course_Schema);
