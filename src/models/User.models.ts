@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { IUser } from "@/types/models/user.d";
 
-const userSchema: Schema<IUser> = new Schema(
+const userSchema = new Schema(
   {
     userId: {
       type: String,
