@@ -1,5 +1,14 @@
 import { Document } from "mongoose";
 
-interface IUser extends Document {}
+interface UserDocument extends Document {
+  userId: string;
+  username: string;
+  email: string;
+  avatar?: string;
+  password: string;
+  number: number;
+  watchHistory?: Types.ObjectId[];
+  refreshToken?: string;
+}
 
-export default IUser;
+export default UserDocument;
