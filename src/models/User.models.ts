@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
-import { UserDocument } from "@/types/models/Index.d";
+import type { UserDocument } from "@/types/models/Index.d";
 import jwt from "jsonwebtoken";
-import { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY, REFRESH_TOKEN_SECRET} from "@/config/index";
+import { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY, REFRESH_TOKEN_SECRET} from "@/config/Index";
 
 const userSchema = new Schema<UserDocument>(
   {

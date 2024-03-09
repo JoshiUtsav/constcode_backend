@@ -4,7 +4,7 @@ import http from "http";
 import cors from "cors";
 import Router from "./routes/routes";
 import Auth from "./routes/auth";
-import { PORT, CORS_ORIGIN } from "./config/Index";
+import { PORT, CORS_ORIGIN } from "@/config/Index";
 import Database from "./database/index";
 import cookieParser from "cookie-parser";
 
