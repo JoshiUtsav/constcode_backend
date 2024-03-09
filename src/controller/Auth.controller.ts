@@ -12,6 +12,7 @@ async function handleUserAuth(req: Request, res: Response) {
       number: phoneNumber,
     });
     const savedUser = await newUser.save();
+    console.log(savedUser);
   } catch (error) {
     console.error("Error saving user:", error);
     res.status(500).send("Internal Server Error");

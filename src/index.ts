@@ -1,12 +1,13 @@
-import 'module-alias/register';
+import "module-alias/register";
 import express, { Request, Response } from "express";
 import http from "http";
 import cors from "cors";
 import Router from "./routes/routes";
-import Auth from "./routes/auth";
+import Auth from "./routes/auth.routes";
 import { PORT, CORS_ORIGIN } from "@/config/Index";
 import Database from "./database/index";
 import cookieParser from "cookie-parser";
+import Docs from "./routes/swagger.routes";
 
 const app = express();
 const server = http.createServer(app);
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 app.use("/", Router);
 app.use("/auth", Auth);
+app.use("/docs", Docs);
 
 app.use(
   (err: Error, req: Request, res: Response, next: express.NextFunction) => {
