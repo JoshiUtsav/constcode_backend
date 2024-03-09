@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 app.use("/", Router);
 app.use("/auth", Auth);
-app.use("/docs", Docs);
+app.use("", Docs);
 
 app.use(
   (err: Error, req: Request, res: Response, next: express.NextFunction) => {
