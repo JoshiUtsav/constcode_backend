@@ -1,0 +1,1 @@
+export { default as UserDocument } from "./user.d";
