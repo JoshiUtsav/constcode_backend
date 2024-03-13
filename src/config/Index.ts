@@ -16,6 +16,15 @@ const REFRESH_TOKEN_SECRET: string =
 const REFRESH_TOKEN_EXPIRY: string =
   process?.env?.REFRESH_TOKEN_EXPIRY || "10d";
 
+const CLOUDINARY_CLOUD_NAME: string =
+  process.env?.CLOUDINARY_CLOUD_NAME || "course-app";
+
+const CLOUDINARY_API_KEY: string =
+  process.env?.CLOUDINARY_API_KEY || "1981984871651651";
+
+const CLOUDINARY_API_SECRET: string =
+  process.env?.CLOUDINARY_API_SECRET || "New-Secret";
+
 export {
   PORT,
   DATABASE_URL,
@@ -26,4 +35,7 @@ export {
   ACCESS_TOKEN_EXPIRY,
   REFRESH_TOKEN_SECRET,
   REFRESH_TOKEN_EXPIRY,
+  CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
 };
