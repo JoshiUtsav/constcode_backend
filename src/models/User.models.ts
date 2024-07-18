@@ -1,19 +1,13 @@
-import mongoose, { Schema, Document, CallbackError } from "mongoose";
+import mongoose, { Schema, CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
 import type { UserDocument } from "@/types/models/Index.d";
 import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY, REFRESH_TOKEN_SECRET} from "@/config/Index";
 
-const userSchema = new Schema<UserDocument>(
+const userSchema = new mongoose.Schema<UserDocument>(
   {
-    userId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     username: {
       type: String,
-      required: true,
       lowercase: true,
       trim: true,
       index: true,
@@ -33,8 +27,8 @@ const userSchema = new Schema<UserDocument>(
       required: [true, "Password is required"],
     },
     number: {
-      type: Number,
-      required: [true, "Number is required"],
+      type: String,
+      // required: [true, "Number is required"],
     },
     watchHistory: [
       {
@@ -67,27 +61,26 @@ userSchema.methods.isPasswordCorrect = async function (password: string) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.generateAccessToken = function () {
-  return jwt.sign(
-    {
-      _id: this.userId,
-      email: this.email,
-      username: this.username,
-    },
-    ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: ACCESS_TOKEN_EXPIRY,
-    }
-  );
+/**
+ * Generates an access token for the user.
+ * @returns A JSON Web Token with the user's _id, email, and username.
+ */
+userSchema.methods.generateAccessToken = function (this: UserDocument): string {
+  const { userId, email, username } = this;
+  return jwt.sign({ _id: userId, email, username }, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRY });
 };
-userSchema.methods.generateRefreshToken = function () {
+/**
+ * Generates a refresh token for the user.
+ * @returns A refresh token string that can be used to generate a new access token.
+ */
+userSchema.methods.generateRefreshToken = function (this: UserDocument): string {
   return jwt.sign(
     {
-      _id: this.userId,
+      _id: this._id as string, // Explicitly state that _id is a string
     },
-    REFRESH_TOKEN_SECRET,
+    REFRESH_TOKEN_SECRET as string, // Explicitly state that REFRESH_TOKEN_SECRET is a string
     {
-      expiresIn: REFRESH_TOKEN_EXPIRY,
+      expiresIn: REFRESH_TOKEN_EXPIRY as string, // Explicitly state that REFRESH_TOKEN_EXPIRY is a string
     }
   );
 };

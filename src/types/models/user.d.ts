@@ -6,7 +6,7 @@ interface UserDocument extends Document {
   email: string;
   avatar?: string;
   password: string;
-  number: number;
+  number: string;
   watchHistory?: Types.ObjectId[];
   refreshToken?: string;
 }
