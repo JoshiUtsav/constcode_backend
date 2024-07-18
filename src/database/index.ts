@@ -4,8 +4,9 @@ import { DATABASE_URL, DB_NAME } from "@/config/Index";
 const connect_DB = async () => {
   try {
     const Database_Instance = await mongoose.connect(
-      `${DATABASE_URL}/${DB_NAME}`
-    );
+      `${DATABASE_URL}/${DB_NAME}?retryWrites=true&w=majority&appName=course-app`
+    );    
+    
     console.log(
       `\nMongoDB Connected !! DB Host: ${Database_Instance.connection.host}`
     );

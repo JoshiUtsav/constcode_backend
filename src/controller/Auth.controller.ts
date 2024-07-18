@@ -1,24 +1,33 @@
 import { Request, Response } from "express";
-import User from "@/models/User.models";
+import User_Model from "@/models/User.models";
+import bcrypt from "bcrypt";
 
-async function handleUserAuth(req: Request, res: Response) {
-  const { id, name, email, password, phoneNumber } = req.body;
+async function handleUserSignup(req: Request, res: Response) {
+  const { name, email, password, phoneNumber } = req.body;
+
   try {
-    const newUser = new User({
-      userId: id,
+    const addUser = new User_Model({
       username: name,
-      email,
-      password,
+      email: email,
+      password: password,
       number: phoneNumber,
     });
-    const savedUser = await newUser.save();
-    console.log(savedUser);
+
+    const user = await addUser.save();
+    res.status(201).json({
+      username: user.username,
+      email: user.email,
+      number: user.number,
+    });
   } catch (error) {
-    console.error("Error saving user:", error);
+    console.error("Error while saving the user:", error);
     res.status(500).send("Internal Server Error");
   }
-  console.log(req.body);
-  res.send(name);
 }
 
-export default handleUserAuth;
+export async function handleUserLogin(req: Request, res: Response) {
+  const { email, password } = req.body;
+  console.log(email, password);
+}
+
+export default handleUserSignup;
