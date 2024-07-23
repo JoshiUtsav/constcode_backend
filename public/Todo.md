@@ -1,2 +1,1 @@
-1. Added swagger for the docs
-2. complete the authentication
+1. complete the authentication
