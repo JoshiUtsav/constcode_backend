@@ -3,8 +3,7 @@ dotenv.config();
 
 const DB_NAME: string = "courseapp";
 
-const DATABASE_URL: string =
-  process?.env?.DATABASE_URL || "mongodb://localhost:27017/courseapp";
+const DATABASE_URL: string = "mongodb://localhost:27017";
 const PORT: number = (process?.env?.PORT as unknown as number) || 3000;
 const API_KEY: string = process?.env?.API_KEY || "your_api_key";
 const CORS_ORIGIN: string = process?.env?.CORS_ORIGIN || "";

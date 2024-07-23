@@ -2,7 +2,12 @@ import mongoose, { Schema, CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
 import type { UserDocument } from "@/types/models/Index.d";
 import jwt from "jsonwebtoken";
-import { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY, REFRESH_TOKEN_SECRET} from "@/config/Index";
+import {
+  ACCESS_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRY,
+  REFRESH_TOKEN_EXPIRY,
+  REFRESH_TOKEN_SECRET,
+} from "@/config/Index";
 
 const userSchema = new mongoose.Schema<UserDocument>(
   {
@@ -19,16 +24,13 @@ const userSchema = new mongoose.Schema<UserDocument>(
       lowercase: true,
       trim: true,
     },
-    avatar: {
-      type: String,
-    },
     password: {
       type: String,
       required: [true, "Password is required"],
     },
     number: {
       type: String,
-      // required: [true, "Number is required"],
+      required: [true, "Number is required"],
     },
     watchHistory: [
       {
@@ -66,14 +68,18 @@ userSchema.methods.isPasswordCorrect = async function (password: string) {
  * @returns A JSON Web Token with the user's _id, email, and username.
  */
 userSchema.methods.generateAccessToken = function (this: UserDocument): string {
-  const { userId, email, username } = this;
-  return jwt.sign({ _id: userId, email, username }, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRY });
+  const { email, username } = this;
+  return jwt.sign({ _id: this._id, email, username }, ACCESS_TOKEN_SECRET, {
+    expiresIn: ACCESS_TOKEN_EXPIRY,
+  });
 };
 /**
  * Generates a refresh token for the user.
  * @returns A refresh token string that can be used to generate a new access token.
  */
-userSchema.methods.generateRefreshToken = function (this: UserDocument): string {
+userSchema.methods.generateRefreshToken = function (
+  this: UserDocument
+): string {
   return jwt.sign(
     {
       _id: this._id as string, // Explicitly state that _id is a string
@@ -85,5 +91,5 @@ userSchema.methods.generateRefreshToken = function (this: UserDocument): string 
   );
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<UserDocument>("User", userSchema);
 export default User;
