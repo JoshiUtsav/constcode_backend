@@ -1,22 +1,22 @@
 import mongoose from "mongoose";
-import { DATABASE_URL, DB_NAME } from "@/config/Index";
+import { DB_URI } from "@/config";
+import async_handler from "@/utils/catchAsync.utils";
 
-const connect_DB = async () => {
-  try {
-    const Database_Instance = await mongoose.connect(
-      `${DATABASE_URL}/${DB_NAME}`
-    );    
-    
-    console.log(`${DATABASE_URL}/${DB_NAME}`);
-    
+/**
+ * Establish a connection to the MongoDB database.
+ * @returns {Promise<void>}
+ */
+export const databaseConnect = async_handler(async () => {
+  const databaseInstance = await mongoose.connect(DB_URI);
+  console.log(
+    `MongoDB Connected !! DB Host: ${databaseInstance.connection.host}`
+  );
+});
 
-    console.log(
-      `\nMongoDB Connected !! DB Host: ${Database_Instance.connection.host}`
-    );
-  } catch (error) {
-    console.error("MongoDB Error: " + error);
-    process.exit(1);
+export const handleDatabaseConnectionError = (error: any) => {
+  console.error("MongoDB connection error:", error.message);
+  if (error.name === "MongoNetworkError") {
+    console.error("Network error. Check your connection.");
   }
+  process.exit(1);
 };
-
-export default connect_DB;

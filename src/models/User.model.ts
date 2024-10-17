@@ -3,11 +3,11 @@ import bcrypt from "bcryptjs";
 import type { UserDocument } from "@/types/models";
 import jwt from "jsonwebtoken";
 import {
-  ACCESS_TOKEN_SECRET,
-  ACCESS_TOKEN_EXPIRY,
-  REFRESH_TOKEN_EXPIRY,
-  REFRESH_TOKEN_SECRET,
-} from "@/config/Index";
+  JWT_SECRET,
+  JWT_EXPIRES_TIME,
+  JWT_REFRESH_SECRET,
+  JWT_REFRESH_EXPIRES_TIME,
+} from "@/config/index";
 
 const userSchema = new mongoose.Schema<UserDocument>(
   {
@@ -32,12 +32,6 @@ const userSchema = new mongoose.Schema<UserDocument>(
       type: String,
       required: [true, "Number is required"],
     },
-    watchHistory: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Course",
-      },
-    ],
     refreshToken: {
       type: String,
     },
@@ -69,11 +63,10 @@ userSchema.methods.isPasswordCorrect = async function (password: string) {
  */
 userSchema.methods.generateAccessToken = function (this: UserDocument): string {
   const { email, username } = this;
-  return jwt.sign({ _id: this._id, email, username }, ACCESS_TOKEN_SECRET, {
-    expiresIn: ACCESS_TOKEN_EXPIRY,
+  return jwt.sign({ _id: this._id, email, username }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_TIME,
   });
 };
-
 
 /**
  * Generates a refresh token for the user.
@@ -84,11 +77,11 @@ userSchema.methods.generateRefreshToken = function (
 ): string {
   return jwt.sign(
     {
-      _id: this._id as string, 
+      _id: this._id as string,
     },
-    REFRESH_TOKEN_SECRET as string, 
+    JWT_REFRESH_EXPIRES_TIME as string,
     {
-      expiresIn: REFRESH_TOKEN_EXPIRY as string,
+      expiresIn: JWT_REFRESH_SECRET as string,
     }
   );
 };

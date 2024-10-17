@@ -5,7 +5,6 @@ interface UserDocument extends Document {
   email: string;
   password: string;
   number: string;
-  watchHistory?: Types.ObjectId[];
   refreshToken?: string;
   isPasswordCorrect(password: string): Promise<boolean>;
   generateAccessToken(): string;
