@@ -1,15 +1,23 @@
-import express from "express";
-import handleUserSignup, {
+import { Router, Request, Response } from "express";
+
+// Controller
+import {
   handleUserLogin,
-} from "@/controller/auth.controller";
-// import { verify_jwt } from "@/middleware/auth.middleware";
+  handleUserSignup,
+  logoutUser,
+  refreshAccessToken,
+} from "../controller/auth.controller";
 
-const Router = express.Router();
+// Middleware
+import { verifyJWT } from "../middleware/auth.middleware";
 
-Router.post("/signup", handleUserSignup);
-Router.post("/login", handleUserLogin);
+const router = Router();
 
-// secured route
-Router.post("/logout",handleUserLogin);
+router.route("/signup").post(handleUserSignup);
+router.route("/login").post(handleUserLogin);
 
-export default Router;
+// Secured routes
+router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/refreshToken").post(refreshAccessToken);
+
+export default router;

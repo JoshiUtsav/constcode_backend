@@ -1,11 +1,16 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import "module-alias/register";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import Router from "@/routes/index.route";
-import { PORT, CORS_ORIGIN } from "@/config/Index";
-import Database from "@/database/index";
+import { CORS_ORIGIN, PORT } from "@/config";
+import {
+  databaseConnect,
+  handleDatabaseConnectionError,
+} from "@/database/index";
 import cookieParser from "cookie-parser";
-import { errorHandler } from "@/utils/error_handler.utils";
 
 const app = express();
 
@@ -19,7 +24,6 @@ app.use(
 );
 app.use(express.static("public"));
 app.use(cookieParser());
-app.use(errorHandler);
 
 app.use("/api", Router);
 
@@ -29,12 +33,15 @@ app.use(
   }
 );
 
-Database()
-  .then(() => {
+const startServer = async () => {
+  try {
+    await databaseConnect();
     app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
+      console.log(`Server is running at http://localhost:${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.log("MongoDB Connection failed: " + err);
-  });
+  } catch (error) {
+    handleDatabaseConnectionError(error);
+  }
+};
+
+startServer();
