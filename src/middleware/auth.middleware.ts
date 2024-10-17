@@ -1,9 +1,9 @@
-import { API_ERROR, ASYNC_HANDLER, API_RESPONSE } from "@/utils/Index.utils";
+import { API_ERROR, async_handler, API_RESPONSE } from "@/utils/Index.utils";
 import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN_SECRET } from "@/config/Index";
-import User_Model from "@/models/User.models";
+import User_Model from "@/models/User.model";
 
-export const verify_jwt = ASYNC_HANDLER(async (req, res, next) => {
+export const verify_jwt = async_handler(async (req, res, next) => {
   try {
     const token =
       req.cookies?.access_token ||
