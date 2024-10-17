@@ -1,6 +1,6 @@
 import mongoose, { Schema, CallbackError } from "mongoose";
 import bcrypt from "bcryptjs";
-import type { UserDocument } from "@/types/models/Index.d";
+import type { UserDocument } from "@/types/models";
 import jwt from "jsonwebtoken";
 import {
   ACCESS_TOKEN_SECRET,
