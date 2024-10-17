@@ -1,7 +1,7 @@
 import express from "express";
 import handleUserSignup, {
   handleUserLogin,
-} from "@/controller/Auth.controller";
+} from "@/controller/auth.controller";
 // import { verify_jwt } from "@/middleware/auth.middleware";
 
 const Router = express.Router();

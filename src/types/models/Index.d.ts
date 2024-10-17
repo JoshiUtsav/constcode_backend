@@ -1,1 +1,1 @@
-export { default as UserDocument } from "./user.d";
+export { default as UserDocument } from "./user";

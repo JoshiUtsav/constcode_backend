@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import type { UserDocument } from "@/types/models/Index.d";
-import User_Model from "@/models/User.model";
+import type { UserDocument } from "@/types/models";
+import User_Model from "@/models/user.model";
 import {
   API_ERROR,
   async_handler,
