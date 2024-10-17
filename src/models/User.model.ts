@@ -1,5 +1,5 @@
 import mongoose, { Schema, CallbackError } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import type { UserDocument } from "@/types/models/Index.d";
 import jwt from "jsonwebtoken";
 import {
@@ -73,6 +73,8 @@ userSchema.methods.generateAccessToken = function (this: UserDocument): string {
     expiresIn: ACCESS_TOKEN_EXPIRY,
   });
 };
+
+
 /**
  * Generates a refresh token for the user.
  * @returns A refresh token string that can be used to generate a new access token.
@@ -82,14 +84,14 @@ userSchema.methods.generateRefreshToken = function (
 ): string {
   return jwt.sign(
     {
-      _id: this._id as string, // Explicitly state that _id is a string
+      _id: this._id as string, 
     },
-    REFRESH_TOKEN_SECRET as string, // Explicitly state that REFRESH_TOKEN_SECRET is a string
+    REFRESH_TOKEN_SECRET as string, 
     {
-      expiresIn: REFRESH_TOKEN_EXPIRY as string, // Explicitly state that REFRESH_TOKEN_EXPIRY is a string
+      expiresIn: REFRESH_TOKEN_EXPIRY as string,
     }
   );
 };
 
-const User = mongoose.model<UserDocument>("User", userSchema);
+const User = mongoose.model<UserDocument>("user", userSchema);
 export default User;
