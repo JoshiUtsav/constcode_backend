@@ -4,7 +4,7 @@ dotenv.config();
 import "module-alias/register";
 import express, { Request, Response } from "express";
 import cors from "cors";
-import Router from "@/routes/index.route";
+import routes from "@/routes/index.route";
 import { CORS_ORIGIN, PORT } from "@/config";
 import {
   databaseConnect,
@@ -25,7 +25,7 @@ app.use(
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.use("/api", Router);
+app.use("/api", routes);
 
 app.use(
   (err: Error, req: Request, res: Response, next: express.NextFunction) => {

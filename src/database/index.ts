@@ -1,17 +1,16 @@
 import mongoose from "mongoose";
 import { DB_URI } from "@/config";
-import async_handler from "@/utils/catchAsync.utils";
 
 /**
  * Establish a connection to the MongoDB database.
  * @returns {Promise<void>}
  */
-export const databaseConnect = async_handler(async () => {
+export const databaseConnect = async () => {
   const databaseInstance = await mongoose.connect(DB_URI);
   console.log(
     `MongoDB Connected !! DB Host: ${databaseInstance.connection.host}`
   );
-});
+};
 
 export const handleDatabaseConnectionError = (error: any) => {
   console.error("MongoDB connection error:", error.message);

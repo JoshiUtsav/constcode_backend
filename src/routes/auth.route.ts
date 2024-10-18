@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 
 // Controller
 import {
@@ -10,8 +10,11 @@ import {
 
 // Middleware
 import { verifyJWT } from "../middleware/auth.middleware";
+import storage from "@/middleware/multer.middleware";
+import multer from "multer";
 
 const router = Router();
+const upload = multer({ storage });
 
 router.route("/signup").post(handleUserSignup);
 router.route("/login").post(handleUserLogin);
