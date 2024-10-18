@@ -3,16 +3,15 @@ import User from "../models/user.model";
 import ApiError from "../utils/apiError.utils";
 import ApiResponse from "../utils/apiResponse.utils";
 import jwt from "jsonwebtoken";
-import { catchAsync } from "../utils/catchAsync.utils";
 import { JWT_SECRET, JWT_REFRESH_SECRET } from "@/config/index";
 
 // Sign-up logic
-const handleUserSignup = catchAsync(async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
+const handleUserSignup = async (req: Request, res: Response) => {
+  const { name, email, password, phoneNumber } = req.body;
 
   // Validate input fields
   if (
-    [username, email, password].some(
+    [name, email, password, phoneNumber].some(
       (value) => typeof value !== "string" || value.trim() === ""
     )
   ) {
@@ -26,7 +25,12 @@ const handleUserSignup = catchAsync(async (req: Request, res: Response) => {
   }
 
   // Create and save new user
-  const user = new User({ username, email, password });
+  const user = new User({
+    username: name,
+    email,
+    password,
+    number: phoneNumber,
+  });
   await user.save();
 
   const createdUser = await User.findById(user.id).select(
@@ -40,14 +44,14 @@ const handleUserSignup = catchAsync(async (req: Request, res: Response) => {
   return res
     .status(201)
     .json(new ApiResponse(201, createdUser, "User registered successfully"));
-});
+};
 
 // Login logic
-const handleUserLogin = catchAsync(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+const handleUserLogin = async (req: Request, res: Response) => {
+  const { email, password, phoneNumber } = req.body;  
 
   // Validate input fields
-  if (!email || !password) {
+  if (!email || !password || !phoneNumber) {
     throw new ApiError(400, "Missing required fields");
   }
 
@@ -78,7 +82,7 @@ const handleUserLogin = catchAsync(async (req: Request, res: Response) => {
         "User logged in successfully"
       )
     );
-});
+};
 
 // Token generation logic
 const generateAccessAndRefreshToken = async (userId: string) => {
@@ -101,7 +105,7 @@ const generateAccessAndRefreshToken = async (userId: string) => {
 };
 
 // Logout logic
-const logoutUser = catchAsync(async (req: Request, res: Response) => {
+const logoutUser = async (req: Request, res: Response) => {
   // Ensure that req.user is defined and is of type UserDocument
   if (!req.user) {
     return res
@@ -120,10 +124,10 @@ const logoutUser = catchAsync(async (req: Request, res: Response) => {
     .clearCookie("accessToken")
     .clearCookie("refreshToken")
     .json(new ApiResponse(200, null, "User logged out successfully"));
-});
+};
 
 // Refresh token logic
-const refreshAccessToken = catchAsync(async (req: Request, res: Response) => {
+const refreshAccessToken = async (req: Request, res: Response) => {
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
 
@@ -163,6 +167,6 @@ const refreshAccessToken = catchAsync(async (req: Request, res: Response) => {
         "Access token refreshed successfully"
       )
     );
-});
+};
 
 export { handleUserSignup, handleUserLogin, logoutUser, refreshAccessToken };
