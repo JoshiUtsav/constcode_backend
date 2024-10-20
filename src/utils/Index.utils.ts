@@ -1,8 +1,8 @@
-export { default as API_ERROR } from "./apiError.utils";
-export { default as API_RESPONSE } from "./apiResponse.utils";
+export { default as API_ERROR } from "@/utils/apiError.utils";
+export { default as API_RESPONSE } from "@/utils/apiResponse.utils";
 export {
   BadRequestError,
   NotFoundError,
   InternalServerError,
   InvalidCredentialsError,
-} from "./apiError.utils";
+} from "@/utils/apiError.utils";

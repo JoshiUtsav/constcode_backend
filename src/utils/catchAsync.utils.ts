@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import ApiError from "./apiError.utils";
+import ApiError from "@/utils/apiError.utils";
 
 /**
  * Middleware to wrap async functions for error handling.

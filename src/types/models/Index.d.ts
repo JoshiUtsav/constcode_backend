@@ -1,1 +1,1 @@
-export { default as UserDocument } from "./user";
+export { default as UserDocument } from "@/types/user";

@@ -1,2 +1,2 @@
-export { default as User } from "./user.model";
-export { default as Transaction } from "./transaction.model";
+export { default as User } from "@/models/user.model";
+export { default as Transaction } from "@/models/transaction.model";
