@@ -1,2 +1,2 @@
-export { handleUserSignup } from "./auth.controller";
-export { handleUserLogin } from "./auth.controller";
+export { handleUserSignup } from "@/controller/auth.controller";
+export { handleUserLogin } from "@/controller/auth.controller";

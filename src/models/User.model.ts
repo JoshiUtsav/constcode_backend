@@ -9,7 +9,7 @@ import {
   JWT_REFRESH_EXPIRES_TIME,
 } from "@/config/index";
 
-const userSchema = new mongoose.Schema<UserDocument>(
+const userSchema = new Schema<UserDocument>(
   {
     username: {
       type: String,

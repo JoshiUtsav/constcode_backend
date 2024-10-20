@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import User from "../models/user.model";
-import ApiError from "../utils/apiError.utils";
-import ApiResponse from "../utils/apiResponse.utils";
+import User from "@/models/user.model";
+import ApiError from "@/utils/apiError.utils";
+import ApiResponse from "@/utils/apiResponse.utils";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET, JWT_REFRESH_SECRET } from "@/config/index";
 
