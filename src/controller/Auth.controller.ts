@@ -48,7 +48,7 @@ const handleUserSignup = async (req: Request, res: Response) => {
 
 // Login logic
 const handleUserLogin = async (req: Request, res: Response) => {
-  const { email, password, phoneNumber } = req.body;  
+  const { email, password, phoneNumber } = req.body;
 
   // Validate input fields
   if (!email || !password || !phoneNumber) {
@@ -148,18 +148,13 @@ const refreshAccessToken = async (req: Request, res: Response) => {
     throw new ApiError(401, "Refresh token expired or used");
   }
 
-  const cookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-  };
-
   const { access_token, refresh_token: newRefresh_token } =
     await generateAccessAndRefreshToken(user.id);
 
   return res
     .status(200)
-    .cookie("accessToken", access_token, cookieOptions)
-    .cookie("refreshToken", newRefresh_token, cookieOptions)
+    .cookie("accessToken", access_token)
+    .cookie("refreshToken", newRefresh_token)
     .json(
       new ApiResponse(
         200,

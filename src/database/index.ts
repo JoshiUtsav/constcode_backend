@@ -6,7 +6,7 @@ import { DB_URI } from "@/config";
  * @returns {Promise<void>}
  */
 export const databaseConnect = async () => {
-  const databaseInstance = await mongoose.connect(DB_URI);
+  const databaseInstance = await mongoose.connect(`${DB_URI}/dashboard`);
   console.log(
     `MongoDB Connected !! DB Host: ${databaseInstance.connection.host}`
   );
