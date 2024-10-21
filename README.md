@@ -1,38 +1,48 @@
-# Code school backend
+# ⚡ Node.js Starter Function
 
-## Getting Started
+A simple starter function. Edit `src/main.js` to get started and create something awesome! 🚀
 
-These instructions will help you set up a local copy of the project for development and testing purposes.
+## 🧰 Usage
 
-### Prerequisites
+### GET /ping
 
-Make sure you have the following software installed on your machine:
+- Returns a "Pong" message.
 
-- [Node.js](https://nodejs.org/) (v18 or later)
-- [npm](https://www.npmjs.com/) (Node Package Manager)
+**Response**
 
-### Installation
+Sample `200` Response:
 
-1. Clone the repository:
+```text
+Pong
+```
 
-   ```bash
-   git clone https://github.com/JoshiUtsav/constcode-backend.git
-   ```
+### GET, POST, PUT, PATCH, DELETE /
 
-3. **Frontend Setup:**
+- Returns a "Learn More" JSON response.
 
-   - **Without Docker:**
+**Response**
 
-     Install dependencies:
+Sample `200` Response:
 
-     ```bash
-     npm install
-     ```
+```json
+{
+  "motto": "Build like a team of hundreds_",
+  "learn": "https://appwrite.io/docs",
+  "connect": "https://appwrite.io/discord",
+  "getInspired": "https://builtwith.appwrite.io"
+}
+```
 
-     Run the development server:
+## ⚙️ Configuration
 
-     ```bash
-     npm run dev
-     ```
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
-4. Open your browser and navigate to [http://localhost:5173](http://localhost:5173) to view the app.
+## 🔒 Environment Variables
+
+No environment variables required.
