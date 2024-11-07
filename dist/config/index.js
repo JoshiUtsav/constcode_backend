@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CLOUDINARY_API_SECRET = exports.CLOUDINARY_API_KEY = exports.CLOUDINARY_CLOUD_NAME = exports.JWT_REFRESH_EXPIRES_TIME = exports.JWT_REFRESH_SECRET = exports.JWT_EXPIRES_TIME = exports.JWT_SECRET = exports.CORS_ORIGIN = exports.API_KEY = exports.DB_URI = exports.PORT = void 0;
+exports.PORT = process.env.PORT || 3000;
+exports.DB_URI = process.env.DB_URI || "mongodb://localhost:27017/courseapp";
+exports.API_KEY = process.env.API_KEY || "your_api_key";
+exports.CORS_ORIGIN = "http://localhost:5173";
+exports.JWT_SECRET = process.env.ACCESS_TOKEN_SECRET || "default_secret";
+exports.JWT_EXPIRES_TIME = process.env.ACCESS_TOKEN_EXPIRY || "1d";
+exports.JWT_REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET || "default_refresh_secret";
+exports.JWT_REFRESH_EXPIRES_TIME = process.env.JWT_REFRESH_EXPIRY || "10d";
+exports.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "course-app";
+exports.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || "1981984871651651";
+exports.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || "New-Secret";
