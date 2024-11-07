@@ -11,6 +11,7 @@ import {
   handleDatabaseConnectionError,
 } from "@/database/index";
 import cookieParser from "cookie-parser";
+import logger from "@/config/logger"; 
 
 const app = express();
 
@@ -27,8 +28,10 @@ app.use(cookieParser());
 
 app.use("/api", routes);
 
+// Error handling middleware
 app.use(
   (err: Error, req: Request, res: Response, next: express.NextFunction) => {
+    logger.error(`Internal Server Error: ${err.message}`); // Log the error
     res.status(500).send(`Internal Server Error: ${err.message}`);
   }
 );
@@ -37,10 +40,11 @@ const startServer = async () => {
   try {
     await databaseConnect();
     app.listen(PORT, () => {
-      console.log(`Server is running at http://localhost:${PORT}`);
+      logger.info(`Server is running at http://localhost:${PORT}`); // Use logger instead of console.log
     });
   } catch (error) {
     handleDatabaseConnectionError(error);
+    logger.error(`Database connection error: ${(error as Error).message}`); // Log database connection error
   }
 };
 

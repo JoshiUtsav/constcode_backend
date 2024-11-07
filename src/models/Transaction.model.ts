@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const transaction_schema = new mongoose.Schema(
   {
-    Transaction_Id: {
+    transaction_Id: {
       type: String,
       required: true,
       unique: true,
