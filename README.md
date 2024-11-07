@@ -1,42 +1,51 @@
-# Apna College ( clone ) backend
+<<<<<<< HEAD
+=======
+# ⚡ Node.js Starter Function
 
-## Description
+A simple starter function. Edit `src/main.js` to get started and create something awesome! 🚀
 
-Welcome to Apna College, a web app designed to provide a user experience similar to Apna College, with additional features and improvements.
+## 🧰 Usage
 
-## Getting Started
+### GET /ping
 
-These instructions will help you set up a local copy of the project for development and testing purposes.
+- Returns a "Pong" message.
 
-### Prerequisites
+**Response**
 
-Make sure you have the following software installed on your machine:
+Sample `200` Response:
 
-- [Node.js](https://nodejs.org/) (v18 or later)
-- [npm](https://www.npmjs.com/) (Node Package Manager)
+```text
+Pong
+```
 
-### Installation
+### GET, POST, PUT, PATCH, DELETE /
 
-1. Clone the repository:
+- Returns a "Learn More" JSON response.
 
-   ```bash
-   https://github.com/JoshiUtsav/apnacollege-backend.git
-   ```
+**Response**
 
-3. **Frontend Setup:**
+Sample `200` Response:
 
-   - **Without Docker:**
+```json
+{
+  "motto": "Build like a team of hundreds_",
+  "learn": "https://appwrite.io/docs",
+  "connect": "https://appwrite.io/discord",
+  "getInspired": "https://builtwith.appwrite.io"
+}
+```
 
-     Install dependencies:
+## ⚙️ Configuration
 
-     ```bash
-     npm install
-     ```
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
-     Run the development server:
+## 🔒 Environment Variables
 
-     ```bash
-     npm run dev
-     ```
-
-4. Open your browser and navigate to [http://localhost:5173](http://localhost:5173) to view the app.
+No environment variables required.
+>>>>>>> 7b0707d53357a299c9948ed0f5978792845d3ca4
