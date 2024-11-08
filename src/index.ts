@@ -1,36 +1,32 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
-import "module-alias/register";
-import express, { Request, Response } from "express";
-import cors from "cors";
-import routes from "./routes/index.route";
-import { CORS_ORIGIN, PORT } from "./config/config";
+import 'module-alias/register';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import routes from './routes/index.route';
+import { CORS_ORIGIN, PORT } from './config/config';
 import {
   databaseConnect,
   handleDatabaseConnectionError,
-} from "./database/index";
-import cookieParser from "cookie-parser";
-import logger from "./config/logger";
+} from './database/index';
+import cookieParser from 'cookie-parser';
+import logger from './config/logger';
 
 const app = express();
 
-
-
-console.log(CORS_ORIGIN);
-
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.json({ limit: '16kb' }));
+app.use(express.urlencoded({ extended: true, limit: '16kb' }));
 app.use(
   cors({
     origin: CORS_ORIGIN,
     credentials: true,
   })
 );
-app.use(express.static("public"));
+app.use(express.static('public'));
 app.use(cookieParser());
 
-app.use("/api", routes);
+app.use('/api', routes);
 
 // Error handling middleware
 app.use(
@@ -44,11 +40,11 @@ const startServer = async () => {
   try {
     await databaseConnect();
     app.listen(PORT, () => {
-      logger.info(`Server is running at http://localhost:${PORT}`); // Use logger instead of console.log
+      logger.info(`Server is running at http://localhost:${PORT}`);
     });
   } catch (error) {
     handleDatabaseConnectionError(error);
-    logger.error(`Database connection error: ${(error as Error).message}`); // Log database connection error
+    logger.error(`Database connection error: ${(error as Error).message}`);
   }
 };
 
