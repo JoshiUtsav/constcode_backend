@@ -13,7 +13,7 @@ const isApiError = (error: unknown): error is ApiError =>
 const handleUserSignup = async (req: Request, res: Response) => {
   try {
     const { name, email, password, phoneNumber } = req.body;
-
+    
     // Validate input fields
     if (
       [name, email, password, phoneNumber].some(
