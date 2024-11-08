@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node --trace-warnings -r dotenv/config --experimental-json-modules dist/index.js\"",
     "start": "node dist/index.js",
-    "build": "npx tsc -b"
+    "build": "tsc -b"
   },
   "keywords": [
     "express",
