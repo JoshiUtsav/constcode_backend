@@ -1,16 +1,16 @@
-class API_ERROR extends Error {
+class ApiError extends Error {
   statusCode: number;
   data: null | any;
   success: boolean;
-  errors: any[];
+  errors: string | any[];
 
   constructor(
     statusCode: number = 500,
-    message: string = "Something went wrong",
-    errors: any[] = [],
-    stack: string = ""
+    message: string | null = 'Something went wrong',
+    errors: string | any[] = [],
+    stack: string = ''
   ) {
-    super(message);
+    super(message ?? 'Something went wrong');
     this.statusCode = statusCode;
     this.data = null;
     this.success = false;
@@ -24,28 +24,4 @@ class API_ERROR extends Error {
   }
 }
 
-export class BadRequestError extends API_ERROR {
-  constructor(message: string, errors: any[] = []) {
-    super(400, message, errors);
-  }
-}
-
-export class NotFoundError extends API_ERROR {
-  constructor(message: string, errors: any[] = []) {
-    super(404, message, errors);
-  }
-}
-
-export class InvalidCredentialsError extends API_ERROR {
-  constructor(message: string, errors: any[] = []) {
-    super(401, message, errors);
-  }
-}
-
-export class InternalServerError extends API_ERROR {
-  constructor(message: string = "Internal Server Error", errors: any[] = []) {
-    super(500, message, errors);
-  }
-}
-
-export default API_ERROR;
+export default ApiError;

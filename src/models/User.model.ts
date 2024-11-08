@@ -1,13 +1,13 @@
-import mongoose, { Schema, CallbackError } from "mongoose";
-import bcrypt from "bcryptjs";
-import type { UserDocument } from "../types/models/Index";
-import jwt from "jsonwebtoken";
+import mongoose, { Schema, CallbackError } from 'mongoose';
+import bcrypt from 'bcryptjs';
+import type { UserDocument } from '../types/models/Index';
+import jwt from 'jsonwebtoken';
 import {
   JWT_SECRET,
   JWT_EXPIRES_TIME,
   JWT_REFRESH_SECRET,
   JWT_REFRESH_EXPIRES_TIME,
-} from "@/config/config";
+} from '@/config/config';
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -26,11 +26,11 @@ const userSchema = new Schema<UserDocument>(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
     },
     number: {
       type: String,
-      required: [true, "Number is required"],
+      required: [true, 'Number is required'],
     },
     refreshToken: {
       type: String,
@@ -42,12 +42,12 @@ const userSchema = new Schema<UserDocument>(
 );
 
 userSchema.pre(
-  "save",
+  'save',
   async function (
     this: UserDocument,
     next: (err?: CallbackError | undefined) => void
   ) {
-    if (!this.isModified("password")) return next();
+    if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 10);
     next();
   }
@@ -86,5 +86,5 @@ userSchema.methods.generateRefreshToken = function (
   );
 };
 
-const User = mongoose.model<UserDocument>("user", userSchema);
+const User = mongoose.model<UserDocument>('user', userSchema);
 export default User;

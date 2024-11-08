@@ -1,4 +1,5 @@
 export const PORT = process.env.PORT || 3000;
+
 export const DB_URI =
   process.env.DB_URI || 'mongodb://localhost:27017/courseapp';
 export const API_KEY = process.env.API_KEY || 'your_api_key';

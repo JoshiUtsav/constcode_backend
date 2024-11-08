@@ -1,31 +1,37 @@
 import { Request, Response } from 'express';
-import User from '../models/User.model';
-import ApiError from '../utils/ApiError.utils';
-import ApiResponse from '../utils/ApiResponse.utils';
+import User from '@/models/user.model';
+import ApiError from '@/utils/apiError.utils';
+import ApiResponse from '@/utils/apiResponse.utils';
 import jwt from 'jsonwebtoken';
-import { JWT_REFRESH_SECRET } from '../config/config';
+import { JWT_REFRESH_SECRET } from '@/config/config';
+import errorHandler from '@/middleware/errorHandler';
+import logger from '@/config/logger';
 
-// Type guard to check if error is an instance of ApiError
-const isApiError = (error: unknown): error is ApiError =>
-  error instanceof ApiError;
-
-// Sign-up logic
-const handleUserSignup = async (req: Request, res: Response) => {
-  try {
+/**
+ * Handles sign-up logic
+ *
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @returns {Promise<Response>} - Promise that resolves with the response object containing the result
+ */
+const handleUserSignup = errorHandler(
+  async (req: Request, res: Response): Promise<Response> => {
     const { name, email, password, phoneNumber } = req.body;
-    
+
     // Validate input fields
     if (
       [name, email, password, phoneNumber].some(
         (value) => typeof value !== 'string' || value.trim() === ''
       )
     ) {
+      logger.warn('Signup attempt with missing required fields');
       throw new ApiError(400, 'Missing required fields');
     }
 
     // Check for existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      logger.warn(`Signup attempt failed: Email already exists - ${email}`);
       throw new ApiError(409, 'Email already exists');
     }
 
@@ -43,24 +49,26 @@ const handleUserSignup = async (req: Request, res: Response) => {
     );
 
     if (!createdUser) {
+      logger.error('Signup failed: Unable to retrieve created user');
       throw new ApiError(500, 'Something went wrong while signing up');
     }
 
+    logger.info(`User registered successfully: ${createdUser.email}`);
     return res
       .status(201)
       .json(new ApiResponse(201, createdUser, 'User registered successfully'));
-  } catch (error) {
-    if (isApiError(error)) {
-      res.status(error.statusCode).json(error);
-    } else {
-      res.status(500).json(new ApiError(500, 'Internal Server Error'));
-    }
   }
-};
+);
 
-// Login logic
-const handleUserLogin = async (req: Request, res: Response) => {
-  try {
+/**
+ * Handles log-in logic
+ *
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @returns {Promise<Response>} - Promise that resolves with the response object containing the result
+ */
+const handleUserLogin = errorHandler(
+  async (req: Request, res: Response): Promise<Response> => {
     const { email, password, phoneNumber } = req.body;
 
     // Validate input fields
@@ -87,7 +95,6 @@ const handleUserLogin = async (req: Request, res: Response) => {
       user.id
     );
 
-    // Send response
     const loggedInUser = await User.findById(user.id).select(
       '-password -refreshToken'
     );
@@ -103,16 +110,15 @@ const handleUserLogin = async (req: Request, res: Response) => {
           'User logged in successfully'
         )
       );
-  } catch (error) {
-    if (isApiError(error)) {
-      res.status(error.statusCode).json(error);
-    } else {
-      res.status(500).json(new ApiError(500, 'Internal Server Error'));
-    }
   }
-};
+);
 
-// Token generation logic
+/**
+ * Generates access and refresh tokens for a user
+ *
+ * @param {string} userId - The user's ID
+ * @returns {Promise<{ access_token: string, refresh_token: string }>} - The generated tokens
+ */
 const generateAccessAndRefreshToken = async (userId: string) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -128,13 +134,17 @@ const generateAccessAndRefreshToken = async (userId: string) => {
   return { access_token, refresh_token };
 };
 
-// Logout logic
-const logoutUser = async (req: Request, res: Response) => {
-  try {
+/**
+ * Handles user logout logic
+ *
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @returns {Promise<Response>} - Promise that resolves with the response object containing the result
+ */
+const logoutUser = errorHandler(
+  async (req: Request, res: Response): Promise<Response> => {
     if (!req.user) {
-      return res
-        .status(401)
-        .json(new ApiResponse(401, null, 'User not authenticated'));
+      throw new ApiError(401, 'User not authenticated');
     }
 
     await User.findByIdAndUpdate(
@@ -148,18 +158,18 @@ const logoutUser = async (req: Request, res: Response) => {
       .clearCookie('accessToken')
       .clearCookie('refreshToken')
       .json(new ApiResponse(200, null, 'User logged out successfully'));
-  } catch (error) {
-    if (isApiError(error)) {
-      res.status(error.statusCode).json(error);
-    } else {
-      res.status(500).json(new ApiError(500, 'Internal Server Error'));
-    }
   }
-};
+);
 
-// Refresh token logic
-const refreshAccessToken = async (req: Request, res: Response) => {
-  try {
+/**
+ * Handles refreshing the access token
+ *
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @returns {Promise<Response>} - Promise that resolves with the response object containing the result
+ */
+const refreshAccessToken = errorHandler(
+  async (req: Request, res: Response): Promise<Response> => {
     const incomingRefreshToken =
       req.cookies.refreshToken || req.body.refreshToken;
 
@@ -170,16 +180,14 @@ const refreshAccessToken = async (req: Request, res: Response) => {
     const decodedToken = jwt.verify(
       incomingRefreshToken,
       JWT_REFRESH_SECRET
-    ) as {
-      id: string;
-    };
+    ) as { id: string };
 
     const user = await User.findById(decodedToken?.id);
     if (!user) {
       throw new ApiError(401, 'Invalid refresh token');
     }
 
-    if (incomingRefreshToken !== user?.refreshToken) {
+    if (incomingRefreshToken !== user.refreshToken) {
       throw new ApiError(401, 'Refresh token expired or used');
     }
 
@@ -197,13 +205,7 @@ const refreshAccessToken = async (req: Request, res: Response) => {
           'Access token refreshed successfully'
         )
       );
-  } catch (error) {
-    if (isApiError(error)) {
-      res.status(error.statusCode).json(error);
-    } else {
-      res.status(500).json(new ApiError(500, 'Internal Server Error'));
-    }
   }
-};
+);
 
 export { handleUserSignup, handleUserLogin, logoutUser, refreshAccessToken };

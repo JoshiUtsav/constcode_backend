@@ -1,6 +1,6 @@
-import multer, { StorageEngine } from "multer";
-import path from "path";
-import { Request } from "express";
+import multer, { StorageEngine } from 'multer';
+import path from 'path';
+import { Request } from 'express';
 
 // Define the type for file (optional based on the properties you need)
 interface MulterFile {
@@ -14,7 +14,7 @@ const storage: StorageEngine = multer.diskStorage({
     file: MulterFile,
     cb: (error: Error | null, destination: string) => void
   ) => {
-    const uploadPath = path.join(__dirname, "../../public/temp");
+    const uploadPath = path.join(__dirname, '../../public/temp');
     cb(null, uploadPath);
   },
   filename: (
