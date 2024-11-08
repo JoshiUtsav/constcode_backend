@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import User from "../models/User.model";
-import ApiError from "../utils/ApiError.utils";
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model';
+import ApiError from '../utils/apiError.utils';
 
 // Extend the Request interface to include the user property
 interface AuthenticatedRequest extends Request {
@@ -9,15 +9,15 @@ interface AuthenticatedRequest extends Request {
 }
 
 const UNAUTHORIZED_MESSAGES = {
-  NO_TOKEN: "Unauthorized: No token provided",
-  INVALID_TOKEN: "Unauthorized: Invalid access token",
-  TOKEN_EXPIRED: "Unauthorized: Token expired",
+  NO_TOKEN: 'Unauthorized: No token provided',
+  INVALID_TOKEN: 'Unauthorized: Invalid access token',
+  TOKEN_EXPIRED: 'Unauthorized: Token expired',
 };
 
 /**
  * Middleware to verify JWT token and attach user to the request object.
  */
-const verifyJWT = async (
+export const verifyJWT = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
@@ -26,7 +26,7 @@ const verifyJWT = async (
     // Extract token from cookies or authorization header
     const token =
       req.cookies?.accessToken ||
-      req.headers.authorization?.replace("Bearer ", "");
+      req.headers.authorization?.replace('Bearer ', '');
 
     // Check if token is provided
     if (!token) {
@@ -40,7 +40,7 @@ const verifyJWT = async (
 
     // Find user by ID from the decoded token
     const user = await User.findById(decodedToken.id).select(
-      "-password -refreshToken"
+      '-password -refreshToken'
     );
 
     // Check if user exists
@@ -62,13 +62,11 @@ const verifyJWT = async (
     }
 
     // Handle any other error that may occur
-    if (typeof error === "string") {
+    if (typeof error === 'string') {
       return next(new ApiError(401, error));
     }
 
     // For unknown error types
-    next(new ApiError(401, "Unauthorized"));
+    next(new ApiError(401, 'Unauthorized'));
   }
 };
-
-export { verifyJWT };
