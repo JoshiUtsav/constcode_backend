@@ -6,7 +6,7 @@ import {
   handleUserSignup,
   logoutUser,
   refreshAccessToken,
-} from '../controller/auth.controller';
+} from '@/controller/auth.controller';
 
 // Middleware
 import { verifyJWT } from '@/middleware/auth.middleware';
