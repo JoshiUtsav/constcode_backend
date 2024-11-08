@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 
 // Controller
 import {
@@ -6,18 +6,18 @@ import {
   handleUserSignup,
   logoutUser,
   refreshAccessToken,
-} from "@/controller/auth.controller";
+} from '../controller/Auth.controller';
 
 // Middleware
-import { verifyJWT } from "@/middleware/auth.middleware";
+import { verifyJWT } from '@/middleware/auth.middleware';
 
 const router = Router();
 
-router.route("/signup").post(handleUserSignup);
-router.route("/login").post(handleUserLogin);
+router.route('/signup').post(handleUserSignup);
+router.route('/login').post(handleUserLogin);
 
 // Secured routes
-router.route("/logout").post(verifyJWT, logoutUser);
-router.route("/refreshToken").post(refreshAccessToken);
+router.route('/logout').post(verifyJWT, logoutUser);
+router.route('/refreshToken').post(refreshAccessToken);
 
 export default router;

@@ -1,13 +1,13 @@
 import mongoose, { Schema, CallbackError } from "mongoose";
 import bcrypt from "bcryptjs";
-import type { UserDocument } from "@/types/models";
+import type { UserDocument } from "../types/models/Index";
 import jwt from "jsonwebtoken";
 import {
   JWT_SECRET,
   JWT_EXPIRES_TIME,
   JWT_REFRESH_SECRET,
   JWT_REFRESH_EXPIRES_TIME,
-} from "@/config/index";
+} from "@/config/config";
 
 const userSchema = new Schema<UserDocument>(
   {

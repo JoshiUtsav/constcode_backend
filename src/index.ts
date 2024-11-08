@@ -4,14 +4,14 @@ dotenv.config();
 import "module-alias/register";
 import express, { Request, Response } from "express";
 import cors from "cors";
-import routes from "@/routes/index.route";
-import { CORS_ORIGIN, PORT } from "@/config";
+import routes from "./routes/index.route";
+import { CORS_ORIGIN, PORT } from "./config/config";
 import {
   databaseConnect,
   handleDatabaseConnectionError,
-} from "@/database/index";
+} from "./database/index";
 import cookieParser from "cookie-parser";
-import logger from "@/config/logger"; 
+import logger from "./config/logger";
 
 const app = express();
 

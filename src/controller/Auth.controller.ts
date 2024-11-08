@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import User from "@/models/user.model";
-import ApiError from "@/utils/apiError.utils";
-import ApiResponse from "@/utils/apiResponse.utils";
-import jwt from "jsonwebtoken";
-import { JWT_REFRESH_SECRET } from "@/config/index";
+import { Request, Response } from 'express';
+import User from '../models/User.model';
+import ApiError from '../utils/ApiError.utils';
+import ApiResponse from '../utils/ApiResponse.utils';
+import jwt from 'jsonwebtoken';
+import { JWT_REFRESH_SECRET } from '../config/config';
 
 // Type guard to check if error is an instance of ApiError
 const isApiError = (error: unknown): error is ApiError =>
@@ -17,16 +17,16 @@ const handleUserSignup = async (req: Request, res: Response) => {
     // Validate input fields
     if (
       [name, email, password, phoneNumber].some(
-        (value) => typeof value !== "string" || value.trim() === ""
+        (value) => typeof value !== 'string' || value.trim() === ''
       )
     ) {
-      throw new ApiError(400, "Missing required fields");
+      throw new ApiError(400, 'Missing required fields');
     }
 
     // Check for existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      throw new ApiError(409, "Email already exists");
+      throw new ApiError(409, 'Email already exists');
     }
 
     // Create and save new user
@@ -39,21 +39,21 @@ const handleUserSignup = async (req: Request, res: Response) => {
     await user.save();
 
     const createdUser = await User.findById(user.id).select(
-      "-password -refreshToken"
+      '-password -refreshToken'
     );
 
     if (!createdUser) {
-      throw new ApiError(500, "Something went wrong while signing up");
+      throw new ApiError(500, 'Something went wrong while signing up');
     }
 
     return res
       .status(201)
-      .json(new ApiResponse(201, createdUser, "User registered successfully"));
+      .json(new ApiResponse(201, createdUser, 'User registered successfully'));
   } catch (error) {
     if (isApiError(error)) {
       res.status(error.statusCode).json(error);
     } else {
-      res.status(500).json(new ApiError(500, "Internal Server Error"));
+      res.status(500).json(new ApiError(500, 'Internal Server Error'));
     }
   }
 };
@@ -61,17 +61,17 @@ const handleUserSignup = async (req: Request, res: Response) => {
 // Login logic
 const handleUserLogin = async (req: Request, res: Response) => {
   try {
-    const { email, password, phoneNumber } = req.body;    
+    const { email, password, phoneNumber } = req.body;
 
     // Validate input fields
     if (!email || !phoneNumber || !password) {
-      throw new ApiError(400, "Missing required fields");
+      throw new ApiError(400, 'Missing required fields');
     }
 
     // Find user by email or phone number
     const user = await User.findOne({ email });
     if (!user) {
-      throw new ApiError(401, "Invalid email or phone number");
+      throw new ApiError(401, 'Invalid email or phone number');
     }
 
     // Verify phone number and password
@@ -79,8 +79,8 @@ const handleUserLogin = async (req: Request, res: Response) => {
       user.number !== phoneNumber ||
       !(await user.isPasswordCorrect(password))
     ) {
-      throw new ApiError(401, "Invalid email, phone number, or password");
-    }    
+      throw new ApiError(401, 'Invalid email, phone number, or password');
+    }
 
     // Generate tokens
     const { access_token, refresh_token } = await generateAccessAndRefreshToken(
@@ -89,25 +89,25 @@ const handleUserLogin = async (req: Request, res: Response) => {
 
     // Send response
     const loggedInUser = await User.findById(user.id).select(
-      "-password -refreshToken"
+      '-password -refreshToken'
     );
 
     return res
       .status(200)
-      .cookie("accessToken", access_token)
-      .cookie("refreshToken", refresh_token)
+      .cookie('accessToken', access_token)
+      .cookie('refreshToken', refresh_token)
       .json(
         new ApiResponse(
           200,
           { user: loggedInUser, access_token, refresh_token },
-          "User logged in successfully"
+          'User logged in successfully'
         )
       );
   } catch (error) {
     if (isApiError(error)) {
       res.status(error.statusCode).json(error);
     } else {
-      res.status(500).json(new ApiError(500, "Internal Server Error"));
+      res.status(500).json(new ApiError(500, 'Internal Server Error'));
     }
   }
 };
@@ -116,7 +116,7 @@ const handleUserLogin = async (req: Request, res: Response) => {
 const generateAccessAndRefreshToken = async (userId: string) => {
   const user = await User.findById(userId);
   if (!user) {
-    throw new ApiError(404, "User not found");
+    throw new ApiError(404, 'User not found');
   }
 
   const access_token = user.generateAccessToken();
@@ -134,7 +134,7 @@ const logoutUser = async (req: Request, res: Response) => {
     if (!req.user) {
       return res
         .status(401)
-        .json(new ApiResponse(401, null, "User not authenticated"));
+        .json(new ApiResponse(401, null, 'User not authenticated'));
     }
 
     await User.findByIdAndUpdate(
@@ -145,14 +145,14 @@ const logoutUser = async (req: Request, res: Response) => {
 
     return res
       .status(200)
-      .clearCookie("accessToken")
-      .clearCookie("refreshToken")
-      .json(new ApiResponse(200, null, "User logged out successfully"));
+      .clearCookie('accessToken')
+      .clearCookie('refreshToken')
+      .json(new ApiResponse(200, null, 'User logged out successfully'));
   } catch (error) {
     if (isApiError(error)) {
       res.status(error.statusCode).json(error);
     } else {
-      res.status(500).json(new ApiError(500, "Internal Server Error"));
+      res.status(500).json(new ApiError(500, 'Internal Server Error'));
     }
   }
 };
@@ -164,7 +164,7 @@ const refreshAccessToken = async (req: Request, res: Response) => {
       req.cookies.refreshToken || req.body.refreshToken;
 
     if (!incomingRefreshToken) {
-      throw new ApiError(401, "Unauthorized request");
+      throw new ApiError(401, 'Unauthorized request');
     }
 
     const decodedToken = jwt.verify(
@@ -176,11 +176,11 @@ const refreshAccessToken = async (req: Request, res: Response) => {
 
     const user = await User.findById(decodedToken?.id);
     if (!user) {
-      throw new ApiError(401, "Invalid refresh token");
+      throw new ApiError(401, 'Invalid refresh token');
     }
 
     if (incomingRefreshToken !== user?.refreshToken) {
-      throw new ApiError(401, "Refresh token expired or used");
+      throw new ApiError(401, 'Refresh token expired or used');
     }
 
     const { access_token, refresh_token: newRefresh_token } =
@@ -188,20 +188,20 @@ const refreshAccessToken = async (req: Request, res: Response) => {
 
     return res
       .status(200)
-      .cookie("accessToken", access_token)
-      .cookie("refreshToken", newRefresh_token)
+      .cookie('accessToken', access_token)
+      .cookie('refreshToken', newRefresh_token)
       .json(
         new ApiResponse(
           200,
           { access_token, refreshToken: newRefresh_token },
-          "Access token refreshed successfully"
+          'Access token refreshed successfully'
         )
       );
   } catch (error) {
     if (isApiError(error)) {
       res.status(error.statusCode).json(error);
     } else {
-      res.status(500).json(new ApiError(500, "Internal Server Error"));
+      res.status(500).json(new ApiError(500, 'Internal Server Error'));
     }
   }
 };

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { DB_URI } from "@/config";
+import { DB_URI } from "@/config/config";
 import logger from "@/config/logger";
 
 /**
