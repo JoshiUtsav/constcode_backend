@@ -7,8 +7,8 @@ export const API_KEY = process.env.API_KEY || 'your_api_key';
 export const CORS_ORIGIN =
   process.env.NODE_ENV === 'production'
     ? process.env.CORS_ORIGIN_PROD
-    : process.env.CORS_ORIGIN_DEV || 'http://localhost:5173';
-    
+    : process.env.CORS_ORIGIN_DEV;
+
 export const JWT_SECRET = process.env.ACCESS_TOKEN_SECRET || 'default_secret';
 export const JWT_EXPIRES_TIME = process.env.ACCESS_TOKEN_EXPIRY || '1d';
 export const JWT_REFRESH_SECRET =

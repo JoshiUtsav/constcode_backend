@@ -25,7 +25,6 @@ app.use(
 );
 app.use(express.static('public'));
 app.use(cookieParser());
-// app.use(errorHandler);
 
 app.use('/api', routes);
 
