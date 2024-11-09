@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { DB_URI } from '@/config/config';
-import logger from '@/config/logger';
+import { DB_URI } from '../config/config';
+import logger from '../config/logger';
 
 /**
  * Establish a connection to the MongoDB database.

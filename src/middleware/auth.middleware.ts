@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '@/models/user.model';
-import ApiError from '@/utils/apiError.utils';
+import User from '../models/user.model';
+import ApiError from '../utils/apiError.utils';
 
 // Extend the Request interface to include the user property
 interface AuthenticatedRequest extends Request {
