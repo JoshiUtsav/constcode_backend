@@ -6,10 +6,10 @@ import {
   handleUserSignup,
   logoutUser,
   refreshAccessToken,
-} from '@/controller/auth.controller';
+} from '../controller/auth.controller';
 
 // Middleware
-import { verifyJWT } from '@/middleware/auth.middleware';
+import { verifyJWT } from '../middleware/auth.middleware';
 
 const router = Router();
 
