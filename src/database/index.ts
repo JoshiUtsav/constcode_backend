@@ -1,12 +1,17 @@
 import mongoose from 'mongoose';
-import { DB_URI } from '../config/config';
-import logger from '../config/logger';
+import { DB_URI } from '@/config/config';
+import logger from '@/config/logger';
 
 /**
  * Establish a connection to the MongoDB database.
  * @returns {Promise<void>}
  */
 export const databaseConnect = async (): Promise<void> => {
+  if (!DB_URI) {
+    logger.error('Database URI is undefined. Please check your configuration.');
+    process.exit(1);
+  }
+
   try {
     const databaseInstance = await mongoose.connect(DB_URI, {
       dbName: 'constcode',
