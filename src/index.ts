@@ -4,15 +4,17 @@ dotenv.config();
 import 'module-alias/register';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import routes from './routes/index.route';
-import { CORS_ORIGIN, PORT } from './config/config';
+import cookieParser from 'cookie-parser';
+
+import routes from '@/routes/index.route';
+import { CORS_ORIGIN, PORT } from '@/config/config';
 import {
   databaseConnect,
   handleDatabaseConnectionError,
-} from './database/index';
-import cookieParser from 'cookie-parser';
-import logger from './config/logger';
-  
+} from '@/database/index';
+import logger from '@/config/logger';
+import errorHandler from '@/middleware/errorHandler';
+
 const app = express();
 
 app.use(express.json({ limit: '16kb' }));

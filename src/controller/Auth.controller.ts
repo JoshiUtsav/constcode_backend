@@ -1,11 +1,14 @@
+// Package imports
 import { Request, Response } from 'express';
-import User from '../models/user.model';
-import ApiError from '../utils/apiError.utils';
-import ApiResponse from '../utils/apiResponse.utils';
 import jwt from 'jsonwebtoken';
-import { JWT_REFRESH_SECRET } from '../config/config';
-import errorHandler from '../middleware/errorHandler';
-import logger from '../config/logger';
+
+// Files imports
+import User from '@/models/user.model';
+import ApiError from '@/utils/apiError.utils';
+import ApiResponse from '@/utils/apiResponse.utils';
+import { JWT_REFRESH_SECRET } from '@/config/config';
+import errorHandler from '@/middleware/errorHandler';
+import logger from '@/config/logger';
 
 /**
  * Handles sign-up logic

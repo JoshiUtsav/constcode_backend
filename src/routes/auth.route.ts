@@ -1,15 +1,12 @@
 import { Router } from 'express';
 
-// Controller
 import {
   handleUserLogin,
   handleUserSignup,
   logoutUser,
   refreshAccessToken,
-} from '../controller/auth.controller';
-
-// Middleware
-import { verifyJWT } from '../middleware/auth.middleware';
+} from '@/controller/auth.controller';
+import { verifyJWT } from '@/middleware/auth.middleware';
 
 const router = Router();
 
